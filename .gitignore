@@ -1,0 +1,15 @@
+# Node
+node_modules/
+.env
+
+# Logs
+logs
+*.log
+
+# Build files
+frontend/spectrasynth-app2/build/
+backend/uploads/
+
+# IDE settings
+.vscode/
+.DS_Store

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Inquiry → Quotation → PO Flow</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        margin: 24px;
+        background: #fafafa;
+      }
+      h1 {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+      .note {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+      .mermaid {
+        background: white;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      }
+    </style>
+    <!-- Mermaid (CDN) -->
+    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      // initialize mermaid
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "base",
+        securityLevel: "loose",
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Inquiry → Quotation → Purchase Order Flow</h1>
+    <div class="note">
+      Diagram shows automated fetch (every 1 minute), role actions, quotation
+      revision history, emailing, and PO creation/display.
+    </div>
+
+    <!-- Mermaid diagram -->
+    <div class="mermaid">
+      %% Mermaid swimlanes using subgraphs to represent roles flowchart TD %%
+      swimlane / role: Inquiry Team subgraph INQ [Inquiry Person / System]
+      direction TB A1([Incoming Email (Inquiry)]):::email --> A2([System fetches
+      inquiry<br />(every 1 minute)]):::system A2 --> A3([Inquiry person
+      reviews]):::person A3 --> FWD([Forward to Technical person]):::action end
+      %% Technical lane subgraph TECH [Technical Person] direction TB
+      T1([Receives forwarded inquiry]):::personT T2([Create temp/technical
+      quotation]):::actionT T3([Update quotation status<br />& mark as forwarded
+      to Marketing]):::actionT end %% Marketing lane subgraph MKT [Marketing
+      Person] direction TB M1([Receives technical quotation]):::personM
+      M2([Finalize quotation]):::actionM M3([Generate final quotation]):::doc
+      M4([Revise quotation<br />(store revision history)]):::history M5([Send
+      quotation via email to client]):::mail M6([Wait for PO from
+      client]):::waiting M7([Create PO in system]):::po M8([Display PO in
+      Purchase Order section]):::display end %% Connections across lanes FWD -->
+      T1 T1 --> T2 T2 --> T3 T3 --> M1 M1 --> M2 M2 --> M3 M3 --> M4 M4 --> M5
+      M5 --> M6 M6 -- "PO received" --> M7 M7 --> M8 %% Optional: Technical can
+      always view final quotation T2 -.-> M3 T2 -.-> M4 %% Styling classes
+      classDef email fill:#ffdede,stroke:#d9534f,stroke-width:1px; classDef
+      system fill:#e8f0ff,stroke:#2a6cff,stroke-width:1px; classDef person
+      fill:#fff5cc,stroke:#d7a700,stroke-width:1px; classDef action
+      fill:#f0f7f0,stroke:#2e8b57,stroke-width:1px; classDef personT
+      fill:#fff5cc,stroke:#b07b00,stroke-width:1px; classDef actionT
+      fill:#e9f7ff,stroke:#1e90ff,stroke-width:1px; classDef personM
+      fill:#fff5cc,stroke:#ad3f85,stroke-width:1px; classDef actionM
+      fill:#fff8e6,stroke:#ff8c00,stroke-width:1px; classDef doc
+      fill:#f6f6ff,stroke:#6b5cff,stroke-width:1px; classDef history
+      fill:#eaf6f1,stroke:#0b775e,stroke-width:1px,stroke-dasharray: 4 2;
+      classDef mail fill:#f0f8ff,stroke:#0b6fff,stroke-width:1px; classDef
+      waiting fill:#fffef0,stroke:#b3b300,stroke-width:1px; classDef po
+      fill:#e6fff1,stroke:#07814a,stroke-width:1px; classDef display
+      fill:#f3faff,stroke:#2f66ff,stroke-width:1px;
+    </div>
+
+    <p style="margin-top: 18px; color: #444; font-size: 14px">
+      Tip: to edit labels or add more steps, open this HTML, change the text
+      inside the <code>&lt;div class="mermaid"&gt;</code> block, save, and
+      refresh your browser.
+    </p>
+  </body>
+</html>
