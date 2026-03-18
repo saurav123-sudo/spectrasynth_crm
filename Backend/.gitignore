@@ -1,0 +1,21 @@
+# ===== Node =====
+node_modules/
+
+# ===== Env files =====
+.env
+.env.*
+!.env.example
+
+# ===== Uploads / Generated files =====
+uploads/
+tmp/
+storage/
+
+# ===== Logs =====
+logs
+*.log
+
+# ===== OS / IDE =====
+.vscode/
+.DS_Store
+Thumbs.db
